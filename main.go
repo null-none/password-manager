@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
-	"password_manager/storage"
+
+	utils "github.com/null-none/password_manager/utils"
 )
 
 const filename = "passwords.json"
 
 func main() {
 	fmt.Println("Welcome to the Password Manager!")
-	var entries []storage.PasswordEntry
+	var entries []utils.PasswordEntry
 	// Load existing passwords from file
-	entries, err := storage.LoadPasswordsFromFile(filename)
+	entries, err := utils.LoadPasswordsFromFile(filename)
 	if err != nil {
 		fmt.Println("Error loading passwords:", err)
 	}
@@ -27,7 +28,7 @@ func main() {
 		case 1:
 			entry := getPasswordEntryFromUser()
 			entries = append(entries, entry)
-			if err := storage.SavePasswordsToFile(entries, filename); err != nil {
+			if err := utils.SavePasswordsToFile(entries, filename); err != nil {
 				fmt.Println("Error saving password:", err)
 			}
 		case 2:
@@ -40,7 +41,7 @@ func main() {
 		}
 	}
 }
-func getPasswordEntryFromUser() storage.PasswordEntry {
+func getPasswordEntryFromUser() utils.PasswordEntry {
 	var service, username string
 	var length int
 	var useUppercase, useDigits, useSpecialChars bool
@@ -56,14 +57,14 @@ func getPasswordEntryFromUser() storage.PasswordEntry {
 	fmt.Scanln(&useDigits)
 	fmt.Print("Use special characters? (Y/N): ")
 	fmt.Scanln(&useSpecialChars)
-	password := password.generatePassword(length, useUppercase, useDigits, useSpecialChars)
-	return storage.PasswordEntry{
+	pass := utils.GeneratePassword(length, useUppercase, useDigits, useSpecialChars)
+	return utils.PasswordEntry{
 		Service:  service,
 		Username: username,
-		Password: password,
+		Password: pass,
 	}
 }
-func displayPasswords(entries []storage.PasswordEntry) {
+func displayPasswords(entries []utils.PasswordEntry) {
 	if len(entries) == 0 {
 		fmt.Println("No passwords saved yet.")
 		return

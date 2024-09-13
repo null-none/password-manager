@@ -1,4 +1,4 @@
-package password
+package utils
 
 import (
 	"math/rand"
@@ -12,7 +12,7 @@ const (
 	specialChars     = "!@#$%^&*()-_=+[]{}|;:'\"<>,.?/~"
 )
 
-func generatePassword(length int, useUppercase, useDigits, useSpecialChars bool) string {
+func GeneratePassword(length int, useUppercase, useDigits, useSpecialChars bool) string {
 	var validChars string
 	validChars += lowercaseLetters
 	if useUppercase {
